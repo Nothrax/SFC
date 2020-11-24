@@ -138,6 +138,14 @@ void MainWindow::handleFunctionChange(const QString& command_text) {
         swarmOptions.function = new DropWave();
     }else if(command_text.contains("Holder Table")){
         swarmOptions.function = new HolderTable();
+    }else if(command_text.endsWith("Shaffer N.4")){
+        swarmOptions.function = new ShafferN4();
+    }else if(command_text.endsWith("Shaffer N.2")){
+        swarmOptions.function = new ShafferN2();
+    }else if(command_text.endsWith("Levy")){
+        swarmOptions.function = new Levy();
+    }else if(command_text.endsWith("Levy N.13")){
+        swarmOptions.function = new LevyN13();
     }else{
         swarmOptions.function = new Ackley();
         functionSelector->setCurrentIndex(0);
