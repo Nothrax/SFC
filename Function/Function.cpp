@@ -4,11 +4,6 @@
 
 #include "Function.h"
 
-/*Point Function::getMinPoint() {
-    Point point = {0,0};
-    return point;
-}*/
-
 Point Function::getBoundary() {
     Point point = {0,0};
     return point;

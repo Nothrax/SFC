@@ -6,8 +6,7 @@
 
 
 double Griewank::calculateFitness(Point point) {
-    double result = ((point.x*point.x)/4000) + ((point.y*point.y)/4000) - (cos(point.x/sqrt(1))*cos(point.y/sqrt(2))) + 1;
-    return result;
+    return ((point.x*point.x)/4000) + ((point.y*point.y)/4000) - (cos(point.x/sqrt(1))*cos(point.y/sqrt(2))) + 1;
 }
 
 double Griewank::getMinFitness() {

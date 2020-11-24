@@ -130,9 +130,17 @@ void MainWindow::handleFunctionChange(const QString& command_text) {
         swarmOptions.function = new Easom();
     }else if(command_text.contains("Michalewicz")){
         swarmOptions.function = new Michalewicz();
+    }else if(command_text.contains("Styblinski-Tang")){
+        swarmOptions.function = new StyblinskiTang();
+    }else if(command_text.contains("Bukin N.6")){
+        swarmOptions.function = new BukinN6();
+    }else if(command_text.contains("Drop-Wave")){
+        swarmOptions.function = new DropWave();
+    }else if(command_text.contains("Holder Table")){
+        swarmOptions.function = new HolderTable();
     }else{
-        swarmOptions.function = nullptr;
-        colorScale->axis()->setLabel("No Function selected");
+        swarmOptions.function = new Ackley();
+        functionSelector->setCurrentIndex(0);
     }
     if(swarmOptions.function != nullptr){
         clearStepResults();
@@ -314,9 +322,10 @@ void MainWindow::createDropdowns() {
 
     functionSelector = new QComboBox(this);
     functionSelector->setGeometry(650,75,150,25);
-    functionSelector->setEditable(true);
-    functionSelector->lineEdit()->setAlignment(Qt::AlignCenter);
+    //functionSelector->setEditable(true);
+    //functionSelector->lineEdit()->setAlignment(Qt::AlignCenter);
     functionSelector->addItems(functions);
+    //functionSelector->setEditable(false);
     connect(functionSelector, &QComboBox::currentTextChanged, this, &MainWindow::handleFunctionChange);
     handleFunctionChange(functionSelector->currentText());
 }

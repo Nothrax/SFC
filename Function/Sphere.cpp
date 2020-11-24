@@ -4,8 +4,7 @@
 
 #include "Sphere.h"
 double Sphere::calculateFitness(Point point) {
-    double result = point.x*point.x + point.y*point.y;
-    return result;
+    return point.x*point.x + point.y*point.y;
 }
 
 double Sphere::getMinFitness() {

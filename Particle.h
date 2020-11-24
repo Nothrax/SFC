@@ -12,6 +12,10 @@
 #include "Function/SixHumpCamel.h"
 #include "Function/Easom.h"
 #include "Function/Michalewicz.h"
+#include "Function/StyblinskiTang.h"
+#include "Function/BukinN6.h"
+#include "Function/DropWave.h"
+#include "Function/HolderTable.h"
 #include <vector>
 #include <cstdlib>
 #include <random>

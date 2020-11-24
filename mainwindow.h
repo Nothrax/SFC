@@ -70,7 +70,8 @@ private:
     bool autoSim = true;
     bool inSimulation = false;
 
-    QStringList functions = {"Ackley", "Cross-in-tray", "Griewank", "Sphere", "Six-Hump Camel", "Easom", "Michalewicz" };
+    QStringList functions = {"Ackley", "Cross-in-tray", "Griewank", "Sphere", "Six-Hump Camel", "Easom", "Michalewicz",
+                             "Styblinski-Tang", "Bukin N.6", "Drop-Wave", "Holder Table"};
     std::vector<Point> particleLocation;
     unsigned int graphResolutionX = 0;
     unsigned int graphResolutionY = 0;

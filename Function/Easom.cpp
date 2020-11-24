@@ -4,8 +4,7 @@
 
 #include "Easom.h"
 double Easom::calculateFitness(Point point) {
-    double result = -cos(point.x)*cos(point.y)*exp(-(point.x - M_PI)*(point.x - M_PI) - (point.y - M_PI)*(point.y - M_PI));
-    return result;
+    return -cos(point.x)*cos(point.y)*exp(-(point.x - M_PI)*(point.x - M_PI) - (point.y - M_PI)*(point.y - M_PI));
 }
 
 double Easom::getMinFitness() {

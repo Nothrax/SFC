@@ -4,8 +4,7 @@
 
 #include "SixHumpCamel.h"
 double SixHumpCamel::calculateFitness(Point point) {
-    double result = (4 - 2.1*point.x*point.x + pow(point.x,4)/3)*point.x*point.x + point.x*point.y + (-4 + 4*point.y*point.y)*point.y*point.y;
-    return result;
+    return (4 - 2.1*point.x*point.x + pow(point.x,4)/3)*point.x*point.x + point.x*point.y + (-4 + 4*point.y*point.y)*point.y*point.y;
 }
 
 double SixHumpCamel::getMinFitness() {
