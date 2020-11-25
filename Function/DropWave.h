@@ -11,7 +11,7 @@
 class DropWave : public Function{
 public:
     double calculateFitness(Point point) override;
-    //Point getMinPoint() override;
+    std::string getMinPoint() override;
     double getMinFitness() override;
     Point getBoundary() override;
 };

@@ -16,3 +16,7 @@ Point BukinN6::getBoundary() {
     Point point = {51.0,3.0};
     return point;
 }
+
+std::string BukinN6::getMinPoint() {
+    return "[-10,1]";
+}

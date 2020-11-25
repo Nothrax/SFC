@@ -16,3 +16,7 @@ Point StyblinskiTang::getBoundary() {
     Point point = {5.0,5.0};
     return point;
 }
+
+std::string StyblinskiTang::getMinPoint() {
+    return "[-2.903534,\n-2.903534]";
+}

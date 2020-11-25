@@ -2,18 +2,17 @@
 // Created by nothrax on 24.11.20.
 //
 
-#ifndef SFC_SHAFFERN4_H
-#define SFC_SHAFFERN4_H
+#ifndef SFC_SCHAFFERN2_H
+#define SFC_SCHAFFERN2_H
 #include "Function.h"
-//https://www.sfu.ca/~ssurjano/schaffer4.html
-class ShafferN4 : public Function{
+//https://www.sfu.ca/~ssurjano/schaffer2.html
+class SchafferN2 : public Function{
 public:
     double calculateFitness(Point point) override;
-    //Point getMinPoint() override;
+    std::string getMinPoint() override;
     double getMinFitness() override;
     Point getBoundary() override;
 };
 
 
-
-#endif //SFC_SHAFFERN4_H
+#endif //SFC_SCHAFFERN2_H

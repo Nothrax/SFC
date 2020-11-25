@@ -16,8 +16,8 @@
 #include "Function/BukinN6.h"
 #include "Function/DropWave.h"
 #include "Function/HolderTable.h"
-#include "Function/ShafferN4.h"
-#include "Function/ShafferN2.h"
+#include "Function/SchafferN4.h"
+#include "Function/SchafferN2.h"
 #include "Function/Levy.h"
 #include "Function/LevyN13.h"
 #include <vector>

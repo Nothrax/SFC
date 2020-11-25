@@ -16,3 +16,7 @@ Point HolderTable::getBoundary() {
     Point point = {10.0,10.0};
     return point;
 }
+
+std::string HolderTable::getMinPoint() {
+    return "[+-8.05502,\n+-9.66459]";
+}

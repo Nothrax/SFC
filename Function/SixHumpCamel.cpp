@@ -15,3 +15,7 @@ Point SixHumpCamel::getBoundary() {
     Point point = {2.0,1.0};
     return point;
 }
+
+std::string SixHumpCamel::getMinPoint() {
+    return "[+-0.0898,\n-+0.7126]";
+}

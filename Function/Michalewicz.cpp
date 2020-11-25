@@ -15,3 +15,7 @@ Point Michalewicz::getBoundary() {
     Point point = {4.0,4.0};
     return point;
 }
+
+std::string Michalewicz::getMinPoint() {
+    return "[2.20,\n1.57]";
+}

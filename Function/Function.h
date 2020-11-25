@@ -8,16 +8,16 @@
 #define SFC_FUNCTION_H
 #include "../Structures.h"
 #include <cmath>
+#include <string>
 
 //todo diku vsecky fce https://www.sfu.ca/~ssurjano/optimization.html
 class Function{
 public:
     //Function();
     virtual double calculateFitness(Point point) = 0;
-    //virtual Point getMinPoint();
+    virtual std::string getMinPoint() = 0;
     virtual double getMinFitness() = 0;
     virtual Point getBoundary();
-    //~Function();
     //static double ackley(Point position);
 protected:
 };

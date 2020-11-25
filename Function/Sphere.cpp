@@ -15,3 +15,7 @@ Point Sphere::getBoundary() {
     Point point = {6.0,6.0};
     return point;
 }
+
+std::string Sphere::getMinPoint() {
+    return "[0,0]";
+}

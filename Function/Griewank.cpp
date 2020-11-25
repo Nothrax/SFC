@@ -17,3 +17,7 @@ Point Griewank::getBoundary() {
     Point point = {100.0,100.0};
     return point;
 }
+
+std::string Griewank::getMinPoint() {
+    return "[0,0]";
+}

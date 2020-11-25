@@ -17,3 +17,6 @@ double CrossInTray::getMinFitness() {
     return -2.06261;
 }
 
+std::string CrossInTray::getMinPoint() {
+    return "[+-1.3491,\n+-1.3491]";
+}

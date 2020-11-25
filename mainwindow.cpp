@@ -138,10 +138,10 @@ void MainWindow::handleFunctionChange(const QString& command_text) {
         swarmOptions.function = new DropWave();
     }else if(command_text.contains("Holder Table")){
         swarmOptions.function = new HolderTable();
-    }else if(command_text.endsWith("Shaffer N.4")){
-        swarmOptions.function = new ShafferN4();
-    }else if(command_text.endsWith("Shaffer N.2")){
-        swarmOptions.function = new ShafferN2();
+    }else if(command_text.endsWith("Schaffer N.4")){
+        swarmOptions.function = new SchafferN4();
+    }else if(command_text.endsWith("Schaffer N.2")){
+        swarmOptions.function = new SchafferN2();
     }else if(command_text.endsWith("Levy")){
         swarmOptions.function = new Levy();
     }else if(command_text.endsWith("Levy N.13")){
@@ -153,7 +153,7 @@ void MainWindow::handleFunctionChange(const QString& command_text) {
     if(swarmOptions.function != nullptr){
         clearStepResults();
         std::string labelString = command_text.toStdString() + std::string(" function");
-        std::string globalMinimaString = "Global minima:\n" + std::to_string(swarmOptions.function->getMinFitness());
+        std::string globalMinimaString = "Global minima:\n" + std::to_string(swarmOptions.function->getMinFitness()) + " at\n"+ swarmOptions.function->getMinPoint();
         globalMinimaLabel->setText(globalMinimaString.c_str());
         colorScale->axis()->setLabel(labelString.c_str());
         particleLocation.clear();
@@ -304,7 +304,7 @@ void MainWindow::createInputs() {
     connect(stepCheckbox, SIGNAL(toggled(bool)), this, SLOT(handleStepToggle(bool)));
 
     globalMinimaLabel = new QLabel("Global minima:\n-", this);
-    globalMinimaLabel->setGeometry(650, 335, 150, 40);
+    globalMinimaLabel->setGeometry(650, 300, 150, 75);
     globalMinimaLabel->setAlignment(Qt::AlignCenter);
 
 
@@ -330,10 +330,7 @@ void MainWindow::createDropdowns() {
 
     functionSelector = new QComboBox(this);
     functionSelector->setGeometry(650,75,150,25);
-    //functionSelector->setEditable(true);
-    //functionSelector->lineEdit()->setAlignment(Qt::AlignCenter);
     functionSelector->addItems(functions);
-    //functionSelector->setEditable(false);
     connect(functionSelector, &QComboBox::currentTextChanged, this, &MainWindow::handleFunctionChange);
     handleFunctionChange(functionSelector->currentText());
 }

@@ -15,3 +15,7 @@ Point LevyN13::getBoundary() {
     Point point = {10.0,10.0};
     return point;
 }
+
+std::string LevyN13::getMinPoint() {
+    return "[1,1]";
+}

@@ -11,6 +11,7 @@
 class CrossInTray : public Function {
 public:
     double calculateFitness(Point point) override;
+    std::string getMinPoint() override;
     double getMinFitness() override;
     Point getBoundary() override;
 };

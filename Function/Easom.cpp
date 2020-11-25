@@ -15,3 +15,7 @@ Point Easom::getBoundary() {
     Point point = {80.0,80.0};
     return point;
 }
+
+std::string Easom::getMinPoint() {
+    return "[3.14159,\n3.14159]";
+}

@@ -16,3 +16,8 @@ Point DropWave::getBoundary() {
     Point point = {6.0,6.0};
     return point;
 }
+
+
+std::string DropWave::getMinPoint() {
+    return "[0,0]";
+}

@@ -71,7 +71,7 @@ private:
     bool inSimulation = false;
 
     QStringList functions = {"Ackley", "Cross-in-tray", "Griewank", "Sphere", "Six-Hump Camel", "Easom", "Michalewicz",
-                             "Styblinski-Tang", "Bukin N.6", "Drop-Wave", "Holder Table", "Shaffer N.4", "Shaffer N.2",
+                             "Styblinski-Tang", "Bukin N.6", "Drop-Wave", "Holder Table", "Schaffer N.4", "Schaffer N.2",
                              "Levy", "Levy N.13"};
     std::vector<Point> particleLocation;
     unsigned int graphResolutionX = 0;
