@@ -4,7 +4,7 @@
 
 #include "LevyN13.h"
 double LevyN13::calculateFitness(Point point) {
-    return pow(sin(3*M_PI*point.x),2) + (point.x -1)*(point.x -1)*(1 + pow(sin(3*M_PI*point.y),2)) + (point.y -1)*(point.y -1)*(1 + pow(sin(3*M_PI*point.y),2));
+    return pow(sin(3*M_PI*point.x),2) + (point.x -1)*(point.x -1)*(1 + pow(sin(3*M_PI*point.y),2)) + (point.y -1)*(point.y -1)*(1 + pow(sin(2*M_PI*point.y),2));
 }
 
 double LevyN13::getMinFitness() {
