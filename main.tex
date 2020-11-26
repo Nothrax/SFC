@@ -1,0 +1,242 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[czech]{babel}
+\usepackage{times}
+\usepackage{hhline}
+\usepackage{colortbl}
+\usepackage{graphics}
+\usepackage[left=2cm,text={17cm, 24cm},top=3cm]{geometry}
+
+\bibliographystyle{czplain}
+
+\begin{document}
+\begin{titlepage}
+\begin{center}
+\Huge
+\textsc{Vysoké učení technické v~Brně}\\
+\huge
+\textsc{Fakulta informačních technologií}
+
+\vspace{\stretch{0.328}}
+\LARGE
+SFC - Soft Computing – 1. projekt\\
+\Huge
+Praktická úloha řešená algoritmem PSO
+\vspace{\stretch{0.618}}
+\end{center}
+\Large
+{26. listopadu 2020 \hfill Jakub Trubka (xtrubk00@vutbr.cz)}
+\end{titlepage}
+
+\newpage
+
+\section{Úvod}
+Tato technická zpráva popisuje projekt, který vznik v rámci předmětu SFC. Projekt se zabývá implementací aplikace demonstrující využití algoritmu optimalizace hejnem částic (dále jen PSO) na praktické úloze. PSO algoritmus je vhodný například na hledání globálního minima funkcí o dvou neznámých, tato optimalizace je v tomto projektu také implementována. Jednotlivé sekce se věnují teorii algoritmu, návrhu, implementaci a experimenty s výslednou aplikací.
+
+\section{Teoretický úvod}\label{sec:uvod}
+Zdrojem teoretických informací o algoritmu PSO je \cite{Lindfield2017} a \cite{SeixasGomesdeAlmeida2019}. 
+Tento typ algoritmů vznikl v roce 1995 na základě práce Jamese Kennedyho a Russela Eberharta \cite{Kennedy}, která se věnovala chování hejna ptáků či ryb a využití tohoto chování v optimalizačních algoritmech. Algoritmus který vzešel ze zmíněné práce je založený na stádě či hejnu jedinců. Každý jedinec v hejnu má vlastní pozici a rychlost a snaží se dosáhnout následujících cílů:
+\begin{itemize}
+    \item jedinec se snaží vyrovnávat rychlost se zbytkem hejna,
+    \item jedinci mají tendenci směřovat ke středu hejna,
+    \item jedinci se snaží udržovat určitou vzdálenost od ostatních jedinců, tato vzdálenost je ale dostatečně malá, aby nedošlo k separaci jedince.
+\end{itemize}
+Implementace algoritmu se tímto chováním inspiruje. Každý jedinec, neboli částice, má na začátku určenou náhodnou pozici a náhodnou rychlost a v každém kroku provádí pohyb na základě vlastních poznatků a poznatků hejna.
+
+
+\subsection{Algoritmus}
+Jak již bylo zmíněno, každá částice má polohu a rychlost. Zároveň má částice znalost nejlepší doposud dosažené pozice celého hejna a nejlepší pozice které dosáhla částice, či její sousedství. V každé iteraci je počítána nová rychlost a poloha částice. Rovnice rychlosti je zobrazena v \ref{eq:vel} a polohy v \ref{eq:pos}, kde $k$ představuje index částice a $t$ krok hejna, a vektory $x$ a $v$ představují rychlost, $\omega$ je koeficient setrvačnosti a $c_p c_g$ jsou váhové koeficienty kognitivní a sociální (udávají důležitost vlastní paměti a vlivu hejna).
+
+\begin{equation}\label{eq:vel}
+    \vec{v}_k(t + 1) = \omega\vec{v}_k(t) + c_pr_p(\vec{x}_{kbest} - \vec{x}_k(t)) + c_gr_g(\vec{x}_{best} - \vec{x}_k(t)) 
+\end{equation}
+
+\begin{equation}\label{eq:pos}
+    \vec{x}_k(t + 1) = \vec{x}_k(t) + \vec{v}_k(t)
+\end{equation}
+
+
+Algoritmus v jednotlivých krocích vypadá následovně:
+
+\begin{enumerate}
+    \item Nastavte hodnoty koeficientů, počet částic, kroků a maximální chybu výsledku.
+    \item Pro každou částici v hejnu:
+        \begin{enumerate}
+            \item nastavte náhodnou polohu částice, 
+            \item nastavte náhodnou rychlost částice, 
+            \item ohodnoťte pozici částice.
+        \end{enumerate}
+    \item Nastavte nejlepší doposud dosaženou polohu částice či sousedství.
+    \item Nastavte nejlepší doposud nalezenou polohu hejna.
+    \item Pro každou částici v hejnu:
+        \begin{enumerate}
+            \item vypočítejte novou rychlost částice,
+            \item vypočítejte novou polohu částice,
+            \item ohodnoťte pozici částice a případně aktualizujte doposud nejlepší nalezenou hodnotu částice či hejna.
+        \end{enumerate}
+    \item Inkrementujte počítadlo kroků a pokud se nejednalo o konečný krok opakujte bod 5.
+\end{enumerate}
+
+
+\section{Návrh a implementace}\label{sec:impl}
+Aplikace byla implementována v jazyce C++ a uživatelské grafické rozhraní bylo vytvořeno pomocí nástroje QT5\footnote{https://www.qt.io/}. Grafy jsou vykreslovány pomocí knihovny QCustomPlot\footnote{https://www.qcustomplot.com/}. Samotná implementace hejna částic se skládá ze dvou tříd: hejna (Swarm) a částice (Particle). Třída hejna umožňuje provést kompletní simulaci nastaveného počtu kroků či krokování. Je umožněno provádění nastavení počtu kroků, funkce, počtu částic, limitu rychlosti, akceptovatelné chyby. Jednotlivé funkce pro optimalizaci byly implementovány pomocí dědičnosti třídy Function a optimalizačnímu algoritmu se předává přímo instance která počítá zvolenou funkci. Pro počítání polohy a rychlosti byly využity vzorce \ref{eq:vel} a \ref{eq:pos} s drobnou obměnou, místo nejlepší doposud nalezené hodnoty částice je využito doposud nejlepší poloha nalezená v sousedství. Sousedství se skládá vždy ze tří částic - částice samotné, částice s indexem o jedna vyšším a částice s indexem o jedna nižším.
+
+\begin{figure}[h]
+  \centering
+  \scalebox{0.5}{
+        \includegraphics{sfc.png}
+    }
+  \caption{Grafické uživatelské prostředí výsledné aplikace.}\label{pic:gui}
+\end{figure}
+
+\subsection{Výsledná aplikace}
+Grafické uživatelské prostředí je možné vidět na obrázku \ref{pic:gui}. Aplikace uživateli umožňuje zapnutí krokování a volbu černobílého či barevného zobrazení funkce. Hodnoty zobrazené v grafu funkce jsou počítány a vykresleny pokaždé při zvolení nějaké funkce. Rozsah os je zvolen podle doporučení prohledávaného prostoru pro jednotlivé funkce. Funkční hodnota je zobrazena pomocí teplotní mapy, jednotlivé částice jsou zobrazeny uvnitř tepelné mapy jako bílé, případně červené body (u černobílé tepelné mapy). Rozhraní umožňuje vyplnění počtu kroků, částic, rychlostního limitu, odchylky od výsledku a funkce. Aplikace obsahuje přepínač s názvem \textit{Auto-sim}. Pokud je tento přepínač potvrzen, aplikace provede kompletní simulaci a zobrazeny jsou pouze výsledky a ne mezikroky. Pokud přepínač není potvrzen, aplikace umožňuje spouštět jednotlivé kroky, zobrazovat mezivýsledky a také automatické dokončení simulace. Výsledky jsou zobrazovány po pravé straně a obsahují: globální minimum a bod funkce (global minima), číslo aktuálního kroku, nejlepší doposud nalezená pozice a funkční hodnota. Simulace je ukončena po dosažení počtu kroků, či po nalezené výsledku s rozdílem menším než zvolený rozptyl.
+
+
+\section{Funkce pro optimalizaci}
+Pro prezentaci využití optimalizace hejnem částic bylo zvoleno patnáct funkcí u kterých je možné tuto optimalizaci provést a sledovat její průběh. Funkce byly vybrány z\footnote{https://www.sfu.ca/~ssurjano/optimization.html}, kde lze nalézt i přepisy funkcí. Zvolené funkce lze rozdělit do několika kategorií podle tvaru - více lokálních minim, tvar misky, tvar údolí a prudké útesy. Informace ke všem funkcím jsou v následující tabulce Přepisy funkcí jsou v příloze.
+
+
+
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|c|c|}\hline
+Název funkce    & Globální minimum & Body globálního minima     & Rozsah~$x$    & Rozsah~$y$     \\ \hline
+Ackley          & $0$              & $[0,0]$                    & $<-40, 40>$   & $<-40, 40>$    \\\hline
+Bukin N.6       & $0$              & $[-10,1]$                  & $<-51, 51>$   & $<-3, 3>$      \\\hline
+Cross In Tray   & $-2.06261$       & $[\pm1.3491, \pm1.3491]$   & $<-10, 10>$   & $<-10, 10>$    \\\hline
+Drop Wave       & $-1$             & $[0, 0]$                   & $<-6, 6>$     & $<-6, 6>$      \\\hline
+Easom           & $-1$             & $[\pi, \pi]$               & $<-80, 80>$   & $<-80, 80>$    \\\hline
+Griewank        & $0$              & $[0, 0]$                   & $<-100, 100>$ & $<-100, 100>$  \\\hline
+Holder Table    & $-19.2085$       & $[\pm8.05502, \pm9.66459]$ & $<-10, 10>$   & $<-10, 10>$    \\\hline
+Levy            & $0$              & $[1,1]$                    & $<-15,15>$    & $<-15,15>$     \\\hline
+Levy N.13       & $0.0$            & $[1,1]$                    & $<-10,10>$    & $<-10,10>$     \\\hline
+Michalewicz     & $-1.8013$        & $[2.20,1.57]$              & $<-4,4>$      & $<-4,4>$       \\\hline
+Schaffer N.2    & $0.0$            & $[0,0]$                    & $<-10, 10>$   & $<-10,10>$     \\\hline
+Schaffer N.4    & $0.292579$       & $[0,0]$                    & $<-50,50>$    & $<-50,50>$     \\\hline
+Six-Hump Camel  & $-1.0316$        & $[\pm0.0989, \mp0.7126]$   & $<-2,2>$      & $<-1,1>$       \\\hline
+Sphere          & $0.0$            & $[0,0]$                    & $<-6,6>$      & $<-6,6>$       \\\hline
+Styblinsky-Tang & $-78.3319$       & $[-2.9035,-2.9035]$        & $<-5,5>$      & $<-5,5>$      \\\hline
+\end{tabular}
+\end{table}
+
+\section{Experimenty}\label{sec:test}
+Byla provedena sada experimentů u každé implementované funkce s různými vstupními parametry. Algoritmus optimalizace hejnem částic neměl problém při jednotlivých experimentech rychle najít výsledek do sta kroků u funkcí ve tvaru údolí či misky, kde se nenacházela lokální minima (například funkce Sphere). V případech funkcí obsahující lokální minima byla úspěšnost menší a částice často našli právě jedno z lokálních minim (například funkce Cross In Tray). Algoritmus byl neúspěšný v případě funkcí ve tvaru prudkých útesů (například funkce Schaffer).
+
+
+\section{Překlad a spuštění}
+Pro úspěšný překlad jsou nutné nástroje cmake3, gcc a QT5. Nástroje lze na linuxové debian distribuci stáhnout následujícími příkazy:
+
+\begin{verbatim}
+    $ sudo apt update
+    $ sudo apt install cmake3 gcc sudo apt-get install qt5-default
+\end{verbatim}
+
+Projekt lze přeložit následujícími příkazy:
+
+\begin{verbatim}
+    $ mkdir build
+    $ cd build
+    $ cmake ..
+    $ make
+\end{verbatim}
+
+Následně lze aplikaci PSUgui spustit příkazem:
+\begin{verbatim}
+    $ ./PSUgui
+\end{verbatim}
+
+
+\section{Závěr}
+V tomto projektu byla naimplementována aplikace umožňující na jedné z patnácti funkcích o dvou neznámých demonstrovat hledání globálního minima pomocí algoritmu optimalizace hejnem částic. Postup algoritmu v jednotlivých krocích je díky možnosti krokování v aplikaci možno snadno vizualizovat a díky tomu je snadné demonstrovat chování algoritmu při různých vstupních parametrech.
+
+\bibliography{zdroje}
+\newpage
+
+\section*{Příloha}
+
+\subsection*{Ackley}
+\begin{equation}\label{eq:ackley}
+    f(x) = -20\exp\left(-0.2\sqrt{\frac{1}{d}\sum_{i = 1}^{d}x_i^2}\right) - \exp\left(\frac{1}{d}\sum_{i = 1}^{d}\cos(2\pi x_i)\right) + a + \exp(1)
+\end{equation}
+
+\subsection*{Bukin N. 6}
+\begin{equation}\label{eq:buk}
+    f(x) = 100\sqrt{|x_2-0.01x_1^2|}+0.01\left|x_1+10\right|
+\end{equation}
+
+\subsection*{Cross-In-Tray}
+\begin{equation}\label{eq:cit}
+    f(x) = -0.0001\left(\left|\sin(x_1)\sin(x_2)\exp\left(\left|100- \frac{\sqrt{x_1^2+x_2^2}}{\pi}\right|\right)\right|+1\right)^{0.1}
+\end{equation}
+
+\subsection*{Drop-Wave}
+\begin{equation}\label{eq:dp}
+    f(x) = -\frac{1+\cos\left(12\sqrt{x_1^2+x_2^2}\right)}{0.5(x_1^2+x_2^2)+2}
+\end{equation}
+
+\subsection*{Easom}
+\begin{equation}\label{eq:ea}
+    f(x) = -\cos(x_1)\cos(x_2)\exp\left(-(x_1-\pi)^2-(x_2-\pi)^2\right)
+\end{equation}
+
+\subsection*{Griewank}
+\begin{equation}\label{eq:gri}
+    f(x) = \sum_{i=1}^{d}\frac{x_i^2}{4000} - \prod_{i=1}^{d}\cos\left(\frac{x_1}{\sqrt{i}}\right) +1
+\end{equation}
+
+\subsection*{Holder Table}
+\begin{equation}\label{eq:holt}
+    f(x) = -\left|\sin(x_1)cos(x_2)\exp\left(\left| 1- \frac{\sqrt{x_1^2+x_2^2}}{\pi} \right| \right) \right|
+\end{equation}
+
+\subsection*{Levy}
+\begin{equation}\label{eq:lev}
+    f(x) = \sin^2(\pi w_1)+\sum_{i=1}^{d-1}(w_i-1)^2\left(1+10\sin^2(\pi w_i +1)\right) + (w_d-1)^2\left(1+\sin^2(2\pi w_d)\right)
+\end{equation}
+\begin{equation}\label{eq:lev1}
+    w_i = 1 + \frac{x_i - 1}{4}
+\end{equation}
+
+\subsection*{Levy N. 13}
+\begin{equation}\label{eq:lev13}
+    f(x) = \sin^2(3\pi x_1) + (x_1 -1)^2\left(1+\sin^2(3\pi x_2)\right) +(x_2 -1)^2\left(1+\sin^2(2\pi x_2)\right)
+\end{equation}
+
+\subsection*{Michalewicz}
+\begin{equation}\label{eq:micha}
+    f(x) = -\sum_{i=1}^{d}\sin(x_i)sin^{20}\left(\frac{ix_i^2}{\pi}\right)
+\end{equation}
+
+\subsection*{Schaffer N. 2}
+\begin{equation}\label{eq:micha}
+    f(x) = 0.5 + \frac{\sin^2(x_1^2-x_2^2)-0.5}{\left( 1+0.001(x_1^2+x_2^2)\right)^2}
+\end{equation}
+
+\subsection*{Schaffer N. 4}
+\begin{equation}\label{eq:micha}
+    f(x) = 0.5 + \frac{\cos^2\left(\sin(|x_1^2-x_2^2|)\right)-0.5}{\left(1+0.001(x_1^2+x_2^2)\right)}
+\end{equation}
+
+\subsection*{Six-Hump Camel}
+\begin{equation}\label{eq:micha}
+    f(x) = \left(4-2.1x_1^2+\frac{x_1^4}{3}\right)x_1^2+x_1x_2 +(-4 + 4x_2^2)x_2^2
+\end{equation}
+
+\subsection*{Sphere}
+\begin{equation}\label{eq:micha}
+    f(x) = \sum_{i=1}^{d}x_i^2
+\end{equation}
+
+\subsection*{Styblinski-Tang}
+\begin{equation}\label{eq:micha}
+    f(x) = \frac{1}{2}\sum_{i=1}^{d}(x_i^4 -16x_i^2 +5x_i)
+\end{equation}
+
+
+
+
+
+\end{document} 
